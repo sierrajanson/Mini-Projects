@@ -1,5 +1,5 @@
-// store adjacency lists in unordered map C++ structure
-//
+// Author: Sierra Janson
+
 #include <unordered_map>
 #include <assert.h>
 #include <iostream>
@@ -15,18 +15,6 @@
 #include <queue>
 using namespace std;
 
-/*class Node{
-	public: 
-		string key;
-		Node *parent;
-		int distance = 1;
-		Node (string a, Node *p,int b){
-			key = a;
-			parent = p;
-			distance = b;
-		}
-};
-*/
 
 class Item{
 	public:
@@ -55,7 +43,7 @@ int main(int argc, char** argv)
       throw std::invalid_argument("Usage: ./treewrapper <INPUT FILE> <OUTPUT FILE>"); // throw error
   }
 	
-  // initializing stuff --------------------------//
+  // initializing --------------------------//
   ifstream input; // stream for input file
   ofstream output; // stream for output file
   ifstream queries;
@@ -160,9 +148,7 @@ int main(int argc, char** argv)
 
 		bool isFound = false;
 		while (!q.empty()){
-			//Node *p = q.front();
 			Item *p = q.front();
-			//cout << p->key << endl;
 			q.pop();
 			assert(catalog.count(p->key) == 1);
 			
@@ -171,7 +157,6 @@ int main(int argc, char** argv)
 				
 				// outputting answer to user
 				isFound = true;
-				//Node *temp = p;
 				string prev = ".";
 				for (string a : p->path){
 					if (prev.compare(".") != 0){
@@ -181,74 +166,25 @@ int main(int argc, char** argv)
 					prev = a;
 				}
 				output << endl;
-				//cout << " freing : " << p->key << endl;
-				//deleted++;
 				delete(p);
 				p = NULL;
 				while (!q.empty()){
 					Item *top = q.front();
-					//cout << "freeing: " << top->key << " ";
 					q.pop();
-					//deleted++;
 					delete(top);
 					top = NULL;
 				}
-				//cout << endl;
-
-				/*vector<string> formatting;
-				string hyp = "-";
-				string lpar = "(";
-				string rpar = ")";
-				string space = " ";
-				
-				// until we have reached the head, append answers to formatting
-				while (temp->parent != NULL){
-					formatting.insert(formatting.end(),rpar+hyp+space+temp->key);
-					Node *save = temp;
-					cout << "i am about to be freed! this is my parents: " << temp->parent->key << endl;
-					temp = temp->parent;
-					formatting.insert(formatting.end(), space+hyp+lpar+catalog[temp->key][save->key]);
-					
-					cout << "freeing: " << save->key << endl;
-					freed_nodes.insert(freed_nodes.end(), save->key);
-					deleted++;
-					// delete(save);
-					// save = NULL;
-				}
-				assert(temp != NULL);
-				formatting.insert(formatting.end(),temp->key);
-				formatting.insert(formatting.end(),catalog[actor1][temp->key]+rpar+hyp+space);
-				formatting.insert(formatting.end(),actor1+space+hyp+lpar);
-				reverse(formatting.begin(), formatting.end());
-				for (string ele : formatting){
-					output << ele;
-				}
-				output << endl;
-				cout << "i should literally be one node: freeing: " << temp->key << endl;
-				freed_nodes.insert(freed_nodes.end(), temp->key);
-				deleted++;
-				*/
-				// delete(temp);
-				// temp = NULL;
-				
-				// free rest of memory:
 				break;
 			} else{
 				for (auto x: catalog[p->key]){
 					if (visited.count(x.first) != 1){
-						//Node *act = new Node(x.first, p, p->distance+1);
 						vector<string> parent_list = p->path;
 						vector<string> new_list = growVector(parent_list, x.first);
 						Item *act = new Item(x.first, new_list);
-						// for adding
-						//added++;
-						//cout << "adding: " << act->key << " with parent: " << p->key << endl;
 						q.push(act);
 						visited.insert({x.first, 0});
 					} 
 				}
-				//cout << "I think I can free you now: " << p->key << endl;
-				//deleted++;
 				delete(p);
 				p = NULL;
 			}
@@ -258,8 +194,6 @@ int main(int argc, char** argv)
 		}
 	 }
   }
-  //cout << added << endl;
-  //cout << deleted << endl;
   queries.close();
   fclose(out_file);
   input.close();
