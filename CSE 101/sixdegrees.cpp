@@ -8,7 +8,7 @@
 #include <fstream>
 #include <array>
 #include <vector> 
-#include <algorithm>
+#include <algoritbuffer_string>
 #include <sstream>
 #include <cstring>
 #include <string>
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
   {
     if (command.length() == 0) // command is empty
       continue;
-    char *yippee = strdup(command.c_str()); // annoying, first copy string into a "C-style" string
+    char *yippee = strdup(command.c_str()); 
     string com = yippee;
     movie = strtok(yippee, " \t"); //tokenize command on whitespace, first token is operation
     assert(movie != NULL);
@@ -86,7 +86,6 @@ int main(int argc, char** argv)
 			    coactors.insert({act2, movie});
 		     } 
 		    else {
-			// assert(catalog[actors_list[i]] != NULL); --> problematic ... do need some way to make sure not empty tho
 			catalog[act1].insert({act2,movie});
 		    }
 		}
@@ -97,8 +96,7 @@ int main(int argc, char** argv)
     }
     free(yippee);
   }
-  //int added = 0;
-  //int deleted = 0;
+
   string buf;
 
 
@@ -107,11 +105,11 @@ int main(int argc, char** argv)
 	  if (buf.length() == 0){
 	  	continue;
 	  }
-    	 char *hm = strdup(buf.c_str()); // annoying, first copy string into a "C-style" string
+    	 char *buffer_string = strdup(buf.c_str()); 
      
-    	 string actor1 = strtok(hm, " \t");
+    	 string actor1 = strtok(buffer_string, " \t");
 	 string actor2 = strtok(NULL, " \t");
-	 free(hm);
+	 free(buffer_string);
 	 // if an actor doesn't exist
   	 if(catalog.count(actor1) != 1 || catalog.count(actor2)!= 1){
 	 	output << "Not present" << endl;
@@ -132,7 +130,6 @@ int main(int argc, char** argv)
 
 		// grab all coactors of actor1
 		for (auto x: catalog[actor1]){
-			//Node *act = new Node(x.first, NULL, 1);
 			// CREATE NEW ITEM:
 			vector<string> my_path;
 			my_path.push_back(actor1);
@@ -140,8 +137,6 @@ int main(int argc, char** argv)
 			Item *act = new Item(x.first, my_path);
 			
 			// CHECKING BALANCE OF ADDED	
-			//added++;
-			//cout << "adding: " << act->key << endl;
 			q.push(act);
 			visited.insert({x.first,0});
 		} 	 
